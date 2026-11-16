@@ -13,8 +13,8 @@ Help are honest empty states until their milestones (M1–M7).
 ## Getting started
 
 1. `npm install`
-2. Create a Supabase project. In **SQL editor** (or via the Supabase CLI) run
-   `supabase/migrations/20261116000000_foundation.sql`.
+2. Create a Supabase project and apply both files in `supabase/migrations/` in order (SQL editor, CLI or MCP). The first is
+   `20261116000000_foundation.sql`, the second `20261116010000_harden_foundation.sql`.
 3. In Supabase **Authentication → Providers → Email**, keep "Confirm email" **on**, and add
    `http://localhost:3000/auth/callback` (and your production URL) to **Redirect URLs**.
 4. Copy `.env.example` to `.env.local` and fill in the project URL and anon key.
