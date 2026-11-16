@@ -7,8 +7,8 @@ teaching sessions, calendar, tasks, resources and accomplishment reports.
 
 ## Status
 
-M0 (foundation) — app shell, design tokens, auth, base schema. Module pages other than Settings and
-Help are honest empty states until their milestones (M1–M7).
+M0 (foundation) and M1 (academic years, terms, active term, settings) are done. Calendar, Tasks,
+My Classes, Resources and Reports are honest empty states until their milestones (M2–M7).
 
 ## Getting started
 
@@ -22,12 +22,13 @@ Help are honest empty states until their milestones (M1–M7).
 
 ## Scripts
 
-| Script           | Purpose            |
-| ---------------- | ------------------ |
-| `npm run dev`    | Development server |
-| `npm run build`  | Production build   |
-| `npm run check`  | Lint + typecheck   |
-| `npm run format` | Prettier           |
+| Script           | Purpose                     |
+| ---------------- | --------------------------- |
+| `npm run dev`    | Development server          |
+| `npm run build`  | Production build            |
+| `npm test`       | Unit tests (academic rules) |
+| `npm run check`  | Lint + typecheck            |
+| `npm run format` | Prettier                    |
 
 ## Structure
 

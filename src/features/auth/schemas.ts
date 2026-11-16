@@ -1,10 +1,6 @@
 import { z } from "zod";
 
-/** Result shape shared by all auth/profile server actions. */
-export type FormState =
-  | { ok?: undefined }
-  | { ok: true; message: string }
-  | { ok: false; errors: Record<string, string> };
+export type { FormState } from "@/lib/form-state";
 
 const email = z.string().trim().toLowerCase().email("Enter a valid email address.");
 

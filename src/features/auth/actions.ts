@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { env } from "@/lib/env";
+import { fieldErrors } from "@/lib/form-state";
 import { createClient } from "@/lib/supabase/server";
 import {
   loginSchema,
@@ -10,15 +11,6 @@ import {
   signupSchema,
   type FormState,
 } from "./schemas";
-
-function fieldErrors(error: { issues: { path: PropertyKey[]; message: string }[] }) {
-  const out: Record<string, string> = {};
-  for (const issue of error.issues) {
-    const key = String(issue.path[0] ?? "form");
-    out[key] ??= issue.message;
-  }
-  return out;
-}
 
 export async function signUp(_prev: FormState, formData: FormData): Promise<FormState> {
   const parsed = signupSchema.safeParse(Object.fromEntries(formData));

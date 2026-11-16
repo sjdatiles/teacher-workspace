@@ -29,7 +29,7 @@ export function Modal({ open, title, onClose, children }: ModalProps) {
       aria-labelledby="modal-title"
       className="rounded-card bg-surface shadow-pop backdrop:bg-ink/40 m-auto w-[min(32rem,calc(100vw-2rem))] p-0"
     >
-      <div className="border-line flex items-center justify-between border-b px-5 py-4">
+      <div className="border-line bg-surface sticky top-0 z-10 flex items-center justify-between border-b px-5 py-4">
         <h2 id="modal-title" className="text-lg font-bold">
           {title}
         </h2>
