@@ -150,10 +150,15 @@ declare
   v_t2 public.academic_terms%rowtype;
   v_t3 public.academic_terms%rowtype;
 begin
-  v_year_id := case tg_table_name
-    when 'academic_years' then coalesce(new.id, old.id)
-    else coalesce(new.academic_year_id, old.academic_year_id)
-  end;
+  -- Separate branches: PL/pgSQL resolves record fields when the statement is
+  -- planned, so a single CASE referencing both tables' columns would fail.
+  if tg_table_name = 'academic_years' then
+    v_year_id := new.id;
+  elsif tg_op = 'DELETE' then
+    v_year_id := old.academic_year_id;
+  else
+    v_year_id := new.academic_year_id;
+  end if;
 
   select * into v_year from public.academic_years where id = v_year_id;
   if not found then
