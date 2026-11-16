@@ -1,26 +1,61 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+  Design tokens for Teacher Workspace.
+  Derived from "Teacher Workspace Dashboard.pdf": warm orange primary,
+  peach-tinted surfaces, soft shadows, generous radius.
+  Hex values are visual approximations of the PDF; adjust here only.
+*/
+@theme {
+  --color-brand-50: #fff8f3;
+  --color-brand-100: #ffeede;
+  --color-brand-200: #ffdcbd;
+  --color-brand-300: #ffc08f;
+  --color-brand-400: #fb9a55;
+  --color-brand-500: #f47b20;
+  --color-brand-600: #dc6510;
+  --color-brand-700: #b64d0c;
+
+  --color-surface: #ffffff;
+  --color-canvas: #fff8f6;
+  --color-sidebar: #fffaf8;
+  --color-line: #f3e6df;
+  --color-ink: #2a2522;
+  --color-ink-soft: #6f655f;
+  --color-ink-faint: #9d928b;
+
+  --color-info-50: #eef4ff;
+  --color-info-500: #3b6fe0;
+  --color-success-50: #e9f8ef;
+  --color-success-500: #22a35a;
+  --color-warning-50: #fff4dc;
+  --color-warning-500: #d98a0b;
+  --color-danger-50: #ffecec;
+  --color-danger-500: #e04646;
+  --color-violet-50: #f3eeff;
+  --color-violet-500: #7a55d6;
+
+  --font-sans: var(--font-nunito), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-control: 0.75rem;
+  --radius-card: 1.25rem;
+  --radius-pill: 999px;
+
+  --shadow-card: 0 1px 2px rgb(120 70 30 / 0.05), 0 6px 20px rgb(120 70 30 / 0.06);
+  --shadow-pop: 0 10px 40px rgb(120 70 30 / 0.18);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 2px;
+  }
 }
