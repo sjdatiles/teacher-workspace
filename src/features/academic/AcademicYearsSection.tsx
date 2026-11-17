@@ -170,9 +170,9 @@ function DeleteYearModal({ year, onClose }: { year: AcademicYear; onClose: () =>
           </p>
         )}
         <p className="text-ink-soft text-sm">
-          This permanently deletes the academic year and its three terms. Subjects, sections,
-          schedules and teaching sessions that belong to this year will be deleted with it once
-          those features are in use. This cannot be undone.
+          This permanently deletes the academic year and its three terms, together with every
+          subject, section, weekly schedule, no-class day and teaching session in it, including
+          Completed sessions. This cannot be undone.
         </p>
         <div className="flex justify-end gap-3">
           <Button variant="secondary" onClick={onClose}>
