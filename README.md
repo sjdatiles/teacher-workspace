@@ -7,8 +7,8 @@ teaching sessions, calendar, tasks, resources and accomplishment reports.
 
 ## Status
 
-M0 (foundation), M1 (academic years, terms, settings) and M2 (My Classes) are built. Calendar, Tasks,
-Resources and Reports are honest empty states until their milestones (M3–M7).
+M0 (foundation), M1 (academic years, terms, settings) and M2 (My Classes) and M3 (Calendar) are built. Tasks,
+Resources and Reports are honest empty states until their milestones (M4–M7).
 
 Database tests: `supabase/tests/foundation.test.sh` and `classes.test.sh` (need PostgreSQL binaries, run as non-root).
 

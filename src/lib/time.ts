@@ -35,3 +35,72 @@ export function formatDate(iso: string): string {
 export function formatRange(startISO: string, endISO: string): string {
   return `${formatDate(startISO)} – ${formatDate(endISO)}`;
 }
+
+// ---------------------------------------------------------------------------
+// Date arithmetic on ISO strings (UTC math, so no time-zone or DST drift)
+// ---------------------------------------------------------------------------
+const MS_DAY = 86_400_000;
+const toUTC = (iso: string) => new Date(`${iso}T00:00:00Z`);
+const fromUTC = (d: Date) => d.toISOString().slice(0, 10);
+
+export const addDays = (iso: string, n: number) =>
+  fromUTC(new Date(toUTC(iso).getTime() + n * MS_DAY));
+
+/** Whole days from a to b (b - a). */
+export const daysBetween = (a: string, b: string) =>
+  Math.round((toUTC(b).getTime() - toUTC(a).getTime()) / MS_DAY);
+
+/** ISO weekday: 1 = Monday … 7 = Sunday. */
+export function isoWeekday(iso: string): number {
+  const d = toUTC(iso).getUTCDay();
+  return d === 0 ? 7 : d;
+}
+
+export const startOfWeek = (iso: string) => addDays(iso, 1 - isoWeekday(iso));
+export const startOfMonth = (iso: string) => `${iso.slice(0, 7)}-01`;
+
+export function endOfMonth(iso: string): string {
+  const [y, m] = iso.split("-").map(Number);
+  return fromUTC(new Date(Date.UTC(y, m, 0)));
+}
+
+/**
+ * Adds whole months. If the target month has no such day (31st → February) the last day of
+ * that month is used, e.g. addMonths("2026-01-31", 1) = "2026-02-28".
+ */
+export function addMonths(iso: string, n: number): string {
+  const [y, m, d] = iso.split("-").map(Number);
+  const first = new Date(Date.UTC(y, m - 1 + n, 1));
+  const last = new Date(Date.UTC(first.getUTCFullYear(), first.getUTCMonth() + 1, 0)).getUTCDate();
+  return fromUTC(
+    new Date(Date.UTC(first.getUTCFullYear(), first.getUTCMonth(), Math.min(d, last))),
+  );
+}
+
+/** "December 2026" */
+export function formatMonth(iso: string): string {
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone: "UTC",
+    month: "long",
+    year: "numeric",
+  }).format(toUTC(iso));
+}
+
+/** "Mon" */
+export function weekdayShort(iso: string): string {
+  return new Intl.DateTimeFormat("en-US", { timeZone: "UTC", weekday: "short" }).format(toUTC(iso));
+}
+
+/** "Monday, Dec 7, 2026" */
+export function formatLongDate(iso: string): string {
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone: "UTC",
+    weekday: "long",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  }).format(toUTC(iso));
+}
+
+/** Day of month as a number. */
+export const dayOfMonth = (iso: string) => Number(iso.slice(8, 10));
