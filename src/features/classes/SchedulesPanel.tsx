@@ -18,6 +18,7 @@ import { deleteSchedule, saveSchedule } from "./actions";
 import { DAYS, dayLabel } from "./constants";
 import { errorsOf, FormBanner } from "./FormBanner";
 import { formatDuration, formatTimeRange } from "./rules";
+import { useClearNewParam } from "@/lib/use-auto-open";
 import type { Schedule, Section, Subject } from "./types";
 
 const initial: FormState = {};
@@ -34,14 +35,19 @@ export function SchedulesPanel({
   sections,
   year,
   onGoToSubjects,
+  autoOpen = false,
 }: {
   schedules: Schedule[];
   subjects: Subject[];
   sections: Section[];
   year: YearInfo;
   onGoToSubjects: string;
+  /** Open the add form straight away (Home quick action), when a subject has sections to schedule. */
+  autoOpen?: boolean;
 }) {
-  const [editing, setEditing] = useState<Schedule | "new" | null>(null);
+  const startOpen = autoOpen && subjects.some((s) => s.sectionIds.length > 0);
+  const [editing, setEditing] = useState<Schedule | "new" | null>(startOpen ? "new" : null);
+  useClearNewParam(autoOpen);
   const [deleting, setDeleting] = useState<Schedule | null>(null);
   const { run, pending, notice, clear, show } = useRunAction();
   const assignable = subjects.filter((s) => s.sectionIds.length > 0);

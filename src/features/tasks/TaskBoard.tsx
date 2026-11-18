@@ -1,5 +1,6 @@
 "use client";
 
+import { useClearNewParam } from "@/lib/use-auto-open";
 import clsx from "clsx";
 import { CheckCircle2, Circle, ClipboardList, Pencil, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
@@ -26,6 +27,7 @@ export function TaskBoard({
   today,
   hasAny,
   filtered,
+  autoOpen = false,
 }: {
   view: TaskView;
   tasks: Task[];
@@ -33,8 +35,11 @@ export function TaskBoard({
   /** The teacher has at least one task (even if filters hide all of them). */
   hasAny: boolean;
   filtered: boolean;
+  /** Open the add form straight away (Home quick action). */
+  autoOpen?: boolean;
 }) {
-  const [dialog, setDialog] = useState<Dialog>(null);
+  const [dialog, setDialog] = useState<Dialog>(autoOpen ? { kind: "form" } : null);
+  useClearNewParam(autoOpen);
   const { run, pending, notice, clear, show } = useRunAction();
   const close = () => setDialog(null);
 

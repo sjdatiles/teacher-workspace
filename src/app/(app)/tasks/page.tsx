@@ -229,6 +229,7 @@ export default async function TasksPage({ searchParams }: { searchParams: Promis
         tasks={shown}
         today={today}
         hasAny={counts.total > 0}
+        autoOpen={one(sp.new) === "1"}
         filtered={filtered}
       />
 

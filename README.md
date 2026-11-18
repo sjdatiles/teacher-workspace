@@ -7,8 +7,8 @@ teaching sessions, calendar, tasks, resources and accomplishment reports.
 
 ## Status
 
-M0 (foundation), M1 (academic years, terms, settings), M2 (My Classes), M3 (Calendar), M4 (Tasks), M5 (Resources) and M6 (Reports) are built.
-The Dashboard and notifications are wired in M7.
+M0 (foundation), M1 (academic years, terms, settings), M2 (My Classes), M3 (Calendar), M4 (Tasks), M5 (Resources), M6 (Reports) and M7 (Dashboard and notifications) are built.
+M8 is QA, security review, documentation and deployment hardening.
 
 Database tests: `supabase/tests/foundation.test.sh` and `classes.test.sh` (need PostgreSQL binaries, run as non-root).
 

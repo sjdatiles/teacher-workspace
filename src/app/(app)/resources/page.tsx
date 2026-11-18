@@ -121,6 +121,7 @@ export default async function ResourcesPage({ searchParams }: { searchParams: Pr
         tagHref={tagHref}
         hasAny={overview.total > 0}
         filtered={filtered}
+        autoOpen={one(sp.new) === "1"}
         filters={
           <form
             method="get"

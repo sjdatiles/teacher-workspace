@@ -17,6 +17,7 @@ import { useOnSuccess, useRunAction } from "@/lib/use-action";
 import { copyFromYear, deleteSubject, saveSubject } from "./actions";
 import { GRADE_LEVELS } from "./constants";
 import { errorsOf, FormBanner } from "./FormBanner";
+import { useClearNewParam } from "@/lib/use-auto-open";
 import type { Section, Subject } from "./types";
 
 const initial: FormState = {};
@@ -26,12 +27,16 @@ export function SubjectsPanel({
   subjects,
   sections,
   otherYears,
+  autoOpen = false,
 }: {
   subjects: Subject[];
   sections: Section[];
   otherYears: { id: string; name: string }[];
+  /** Open the add form straight away (Home quick action). */
+  autoOpen?: boolean;
 }) {
-  const [editing, setEditing] = useState<Subject | "new" | null>(null);
+  const [editing, setEditing] = useState<Subject | "new" | null>(autoOpen ? "new" : null);
+  useClearNewParam(autoOpen);
   const [deleting, setDeleting] = useState<Subject | null>(null);
   const [copying, setCopying] = useState(false);
   const { run, pending, notice, clear, show } = useRunAction();

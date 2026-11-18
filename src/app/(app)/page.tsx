@@ -1,13 +1,21 @@
 import { CalendarRange, Home } from "lucide-react";
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { LinkButton } from "@/components/ui/LinkButton";
-import { termStatusLabel } from "@/features/academic/rules";
-import { SCHOOL_TIME_ZONE, formatDate } from "@/lib/time";
+import {
+  MyDay,
+  ProgressCard,
+  StatsStrip,
+  TasksCard,
+  UpcomingCard,
+} from "@/features/dashboard/Cards";
+import { MiniCalendar } from "@/features/dashboard/MiniCalendar";
+import { QuickActions } from "@/features/dashboard/QuickActions";
+import { nowInSchool } from "@/lib/time";
 import { getAcademicContext } from "@/services/academic";
+import { getDashboard } from "@/services/dashboard";
 import { requireTeacher } from "@/services/teacher";
 
 export const metadata: Metadata = { title: "Home" };
@@ -22,44 +30,30 @@ export default async function HomePage() {
   const teacher = await requireTeacher();
   const { selectedYear, activeTerm, today } = await getAcademicContext();
 
-  const hour = Number(
-    new Intl.DateTimeFormat("en-US", {
-      hour: "numeric",
-      hour12: false,
-      timeZone: SCHOOL_TIME_ZONE,
-    }).format(new Date()),
-  );
+  const hour = Math.floor(nowInSchool().minutes / 60);
   const firstName = (teacher.fullName || teacher.email).split(/[\s@]/)[0];
   const todayLabel = new Intl.DateTimeFormat("en-US", {
     dateStyle: "full",
     timeZone: "UTC",
   }).format(new Date(`${today}T00:00:00Z`));
 
+  const data = selectedYear
+    ? await getDashboard({
+        yearId: selectedYear.id,
+        today,
+        activeTermId: activeTerm?.id ?? null,
+        activeTermNumber: activeTerm?.termNumber ?? null,
+      })
+    : null;
+
   return (
     <>
-      <PageHeader
-        title={`${greeting(hour)}, ${firstName}!`}
-        description={todayLabel}
-        icon={Home}
-        action={
-          selectedYear ? (
-            <div className="flex flex-wrap items-center gap-2">
-              <Badge tone="neutral">Academic year {selectedYear.name}</Badge>
-              <Badge tone={activeTerm ? "brand" : "neutral"}>
-                {termStatusLabel(selectedYear, today)}
-              </Badge>
-            </div>
-          ) : undefined
-        }
-      />
-      <Card>
-        {selectedYear ? (
-          <EmptyState
-            icon={<Home className="size-8" aria-hidden />}
-            title="Your dashboard is ready for data"
-            description={`Viewing ${selectedYear.name} (${formatDate(selectedYear.startDate)} – ${formatDate(selectedYear.endDate)}). Today's schedule, upcoming events, task overview and teaching progress will appear here as you add classes and tasks.`}
-          />
-        ) : (
+      <PageHeader title={`${greeting(hour)}, ${firstName}!`} description={todayLabel} icon={Home} />
+
+      <QuickActions hasYear={Boolean(selectedYear)} />
+
+      {!selectedYear || !data ? (
+        <Card>
           <EmptyState
             icon={<CalendarRange className="size-8" aria-hidden />}
             title="Start by setting up your academic year"
@@ -70,8 +64,28 @@ export default async function HomePage() {
               </LinkButton>
             }
           />
-        )}
-      </Card>
+        </Card>
+      ) : (
+        <>
+          <StatsStrip stats={data.stats} />
+          <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
+            <MyDay items={data.today} today={today} />
+            <Card className="p-4 sm:p-5">
+              <h2 className="text-ink mb-3 text-base font-bold">Calendar</h2>
+              <MiniCalendar today={today} items={data.month} />
+            </Card>
+            <div className="lg:col-span-2 xl:col-span-1">
+              <UpcomingCard items={data.upcoming} />
+            </div>
+            <div className="lg:col-span-1 xl:col-span-1">
+              <TasksCard data={data} today={today} />
+            </div>
+            <div className="lg:col-span-1 xl:col-span-2">
+              <ProgressCard progress={data.progress} />
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 }

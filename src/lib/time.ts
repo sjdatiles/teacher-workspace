@@ -104,3 +104,15 @@ export function formatLongDate(iso: string): string {
 
 /** Day of month as a number. */
 export const dayOfMonth = (iso: string) => Number(iso.slice(8, 10));
+
+/** The current date and minutes since midnight in the school time zone. */
+export function nowInSchool(now: Date = new Date()): { date: string; minutes: number } {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: SCHOOL_TIME_ZONE,
+    hour: "numeric",
+    minute: "numeric",
+    hour12: false,
+  }).formatToParts(now);
+  const num = (type: string) => Number(parts.find((p) => p.type === type)?.value ?? 0);
+  return { date: todayISO(now), minutes: (num("hour") % 24) * 60 + num("minute") };
+}

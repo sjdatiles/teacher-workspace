@@ -17,6 +17,7 @@ import { useOnSuccess, useRunAction } from "@/lib/use-action";
 import { deleteSection, saveSection } from "./actions";
 import { GRADE_LEVELS } from "./constants";
 import { errorsOf, FormBanner } from "./FormBanner";
+import { useClearNewParam } from "@/lib/use-auto-open";
 import type { Section, Subject } from "./types";
 
 const initial: FormState = {};
@@ -25,11 +26,15 @@ const gradeOptions = GRADE_LEVELS.map((g) => ({ value: g, label: g }));
 export function SectionsPanel({
   sections,
   subjects,
+  autoOpen = false,
 }: {
   sections: Section[];
   subjects: Subject[];
+  /** Open the add form straight away (Home quick action). */
+  autoOpen?: boolean;
 }) {
-  const [editing, setEditing] = useState<Section | "new" | null>(null);
+  const [editing, setEditing] = useState<Section | "new" | null>(autoOpen ? "new" : null);
+  useClearNewParam(autoOpen);
   const [deleting, setDeleting] = useState<Section | null>(null);
   const { run, pending, notice, clear, show } = useRunAction();
   const totalStudents = sections.reduce((n, s) => n + s.population, 0);

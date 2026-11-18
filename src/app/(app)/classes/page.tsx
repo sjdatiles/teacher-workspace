@@ -24,6 +24,7 @@ type Tab = (typeof TABS)[number];
 
 export default async function ClassesPage({ searchParams }: { searchParams: Promise<Search> }) {
   const sp = await searchParams;
+  const openNew = one(sp.new) === "1";
   const { selectedYear, years, today } = await getAcademicContext();
 
   if (!selectedYear) {
@@ -111,14 +112,18 @@ export default async function ClassesPage({ searchParams }: { searchParams: Prom
           otherYears={years
             .filter((y) => y.id !== selectedYear.id)
             .map((y) => ({ id: y.id, name: y.name }))}
+          autoOpen={openNew}
         />
       )}
-      {tab === "sections" && <SectionsPanel sections={sections} subjects={subjects} />}
+      {tab === "sections" && (
+        <SectionsPanel sections={sections} subjects={subjects} autoOpen={openNew} />
+      )}
       {tab === "schedules" && (
         <SchedulesPanel
           schedules={schedules}
           subjects={subjects}
           sections={sections}
+          autoOpen={openNew}
           year={yearInfo}
           onGoToSubjects="/classes?tab=subjects"
         />
@@ -186,6 +191,7 @@ async function SessionsTab({
       pastScheduled={pastScheduled}
       hasSchedules={data.schedules.length > 0}
       canAddManual={data.subjects.some((s) => s.sectionIds.length > 0)}
+      autoOpen={one(sp.new) === "1"}
     />
   );
 }

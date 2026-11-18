@@ -1,5 +1,6 @@
 "use client";
 
+import { useClearNewParam } from "@/lib/use-auto-open";
 import { CalendarCheck, CheckCheck, ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import Link from "next/link";
 import { useActionState, useState } from "react";
@@ -62,6 +63,7 @@ export function SessionsPanel({
   pastScheduled,
   hasSchedules,
   canAddManual,
+  autoOpen = false,
 }: {
   rows: Session[];
   total: number;
@@ -74,8 +76,13 @@ export function SessionsPanel({
   pastScheduled: number;
   hasSchedules: boolean;
   canAddManual: boolean;
+  /** Open the add-session form straight away (Home quick action). */
+  autoOpen?: boolean;
 }) {
-  const [dialog, setDialog] = useState<Dialog>(null);
+  const [dialog, setDialog] = useState<Dialog>(
+    autoOpen && canAddManual ? { kind: "manual" } : null,
+  );
+  useClearNewParam(autoOpen);
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const { run, pending, notice, clear, show } = useRunAction();
 

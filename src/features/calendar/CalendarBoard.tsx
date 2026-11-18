@@ -1,5 +1,6 @@
 "use client";
 
+import { useClearNewParam } from "@/lib/use-auto-open";
 import clsx from "clsx";
 import {
   CalendarDays,
@@ -52,6 +53,7 @@ export function CalendarBoard({
   q,
   cat,
   searchResults,
+  autoOpen = false,
 }: {
   view: CalendarView;
   date: string;
@@ -62,8 +64,13 @@ export function CalendarBoard({
   cat: string;
   /** When set, the page shows search results instead of a grid. */
   searchResults: CalendarItem[] | null;
+  /** Open the add-event form straight away (Home quick action). */
+  autoOpen?: boolean;
 }) {
-  const [dialog, setDialog] = useState<Dialog>(null);
+  const [dialog, setDialog] = useState<Dialog>(
+    autoOpen ? { kind: "form", mode: { kind: "new", date: today } } : null,
+  );
+  useClearNewParam(autoOpen);
   const { run, pending, notice, clear, show } = useRunAction();
   const close = () => setDialog(null);
   const open = (item: CalendarItem) => setDialog({ kind: "details", item });

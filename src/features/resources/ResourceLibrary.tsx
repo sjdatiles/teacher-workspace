@@ -1,5 +1,6 @@
 "use client";
 
+import { useClearNewParam } from "@/lib/use-auto-open";
 import clsx from "clsx";
 import {
   ExternalLink,
@@ -51,6 +52,7 @@ export function ResourceLibrary({
   hasAny,
   filtered,
   filters,
+  autoOpen = false,
 }: {
   rows: Resource[];
   folders: FolderTile[];
@@ -65,8 +67,11 @@ export function ResourceLibrary({
   filtered: boolean;
   /** The search/filter form, rendered above the list. */
   filters: ReactNode;
+  /** Open the add form straight away (Home quick action). */
+  autoOpen?: boolean;
 }) {
-  const [dialog, setDialog] = useState<Dialog>(null);
+  const [dialog, setDialog] = useState<Dialog>(autoOpen ? { kind: "resource" } : null);
+  useClearNewParam(autoOpen);
   const { run, pending, notice, clear, show } = useRunAction();
   const close = () => setDialog(null);
   const folderName = (id: string | null) => folders.find((f) => f.id === id)?.name;

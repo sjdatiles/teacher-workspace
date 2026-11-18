@@ -93,6 +93,7 @@ export default async function CalendarPage({ searchParams }: { searchParams: Pro
         q={q}
         cat={cat}
         searchResults={searchResults}
+        autoOpen={one(sp.new) === "1"}
       />
     </>
   );
