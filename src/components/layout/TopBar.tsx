@@ -6,7 +6,7 @@ import { UserMenu } from "./UserMenu";
 
 export function TopBar({ name }: { name: string }) {
   return (
-    <header className="bg-canvas/90 sticky top-0 z-30 flex items-center gap-3 px-4 py-3 backdrop-blur sm:px-6 lg:px-8">
+    <header className="bg-canvas/90 sticky top-0 z-30 flex items-center gap-3 px-4 py-3 backdrop-blur sm:px-6 lg:px-8 print:hidden">
       <Link href="/" aria-label="Teacher Workspace home" className="lg:hidden">
         <LogoMark className="size-9" />
       </Link>

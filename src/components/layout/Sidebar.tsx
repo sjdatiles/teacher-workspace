@@ -30,7 +30,7 @@ function NavLink({ item, pathname }: { item: NavItem; pathname: string }) {
 export function Sidebar({ name, jobTitle }: { name: string; jobTitle: string }) {
   const pathname = usePathname();
   return (
-    <aside className="border-line bg-sidebar sticky top-0 hidden h-dvh w-72 shrink-0 flex-col border-r lg:flex">
+    <aside className="border-line bg-sidebar sticky top-0 hidden h-dvh w-72 shrink-0 flex-col border-r lg:flex print:hidden">
       <div className="px-5 pt-6 pb-4">
         <Link href="/" aria-label="Teacher Workspace home">
           <Logo />

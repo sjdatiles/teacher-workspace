@@ -15,7 +15,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       <div className="flex min-w-0 flex-1 flex-col">
         <TopBar name={displayName} />
         <main id="main" className="flex-1 px-4 pt-2 pb-24 sm:px-6 lg:px-8 lg:pb-10">
-          <AcademicContextBar />
+          <div className="print:hidden">
+            <AcademicContextBar />
+          </div>
           {children}
         </main>
       </div>

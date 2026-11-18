@@ -11,7 +11,7 @@ export function MobileNav() {
   return (
     <nav
       aria-label="Primary"
-      className="border-line bg-sidebar/95 fixed inset-x-0 bottom-0 z-40 border-t pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden"
+      className="border-line bg-sidebar/95 fixed inset-x-0 bottom-0 z-40 border-t pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden print:hidden"
     >
       <ul className="mx-auto grid max-w-2xl grid-cols-6">
         {PRIMARY_NAV.map((item) => {
