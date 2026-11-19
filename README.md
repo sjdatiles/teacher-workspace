@@ -8,9 +8,11 @@ teaching sessions, calendar, tasks, resources and accomplishment reports.
 ## Status
 
 M0 (foundation), M1 (academic years, terms, settings), M2 (My Classes), M3 (Calendar), M4 (Tasks), M5 (Resources), M6 (Reports) and M7 (Dashboard and notifications) are built.
-M8 is QA, security review, documentation and deployment hardening.
+M8 (security audit, performance indexes, security headers, documentation) is done; a live end-to-end pass by the owner is still pending.
 
-Database tests: `supabase/tests/foundation.test.sh` and `classes.test.sh` (need PostgreSQL binaries, run as non-root).
+Docs: [User guide](docs/USER_GUIDE.md) · [Architecture](docs/ARCHITECTURE.md) · [Security](docs/SECURITY.md) · [Deployment and backups](docs/DEPLOYMENT.md) · [Testing and acceptance](docs/TESTING.md)
+
+Database tests: `supabase/tests/*.test.sh` (foundation, classes, calendar, tasks, resources, reports, notifications, security); they need PostgreSQL binaries and a non-root user. Unit tests: `npm test`.
 
 ## Getting started
 
