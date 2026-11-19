@@ -49,3 +49,12 @@ export const deleteAccountSchema = z.object({
   password: z.string().min(1, "Enter your password."),
   confirmation: z.literal("DELETE", { error: "Type DELETE in capital letters to confirm." }),
 });
+
+export const forgotPasswordSchema = z.object({ email });
+
+export const resetPasswordSchema = z
+  .object({ newPassword, confirmPassword: z.string() })
+  .refine((v) => v.newPassword === v.confirmPassword, {
+    path: ["confirmPassword"],
+    message: "Passwords do not match.",
+  });

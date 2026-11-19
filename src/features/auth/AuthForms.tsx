@@ -1,10 +1,19 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState, useState } from "react";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import { Field } from "@/components/ui/Field";
-import { changePassword, deleteAccount, logIn, signUp, updateProfile } from "./actions";
+import {
+  changePassword,
+  deleteAccount,
+  logIn,
+  requestPasswordReset,
+  resetPassword,
+  signUp,
+  updateProfile,
+} from "./actions";
 import type { FormState } from "./schemas";
 
 const initial: FormState = {};
@@ -60,6 +69,11 @@ export function LoginForm() {
         error={e.password}
         required
       />
+      <p className="-mt-1 text-right text-sm">
+        <Link href="/forgot-password" className="text-brand-600 font-semibold hover:underline">
+          Forgot password?
+        </Link>
+      </p>
       <Button type="submit" loading={pending} className="w-full">
         Log in
       </Button>
@@ -242,5 +256,56 @@ export function DeleteAccountSection() {
         </form>
       </Modal>
     </div>
+  );
+}
+
+export function ForgotPasswordForm() {
+  const [state, action, pending] = useActionState(requestPasswordReset, initial);
+  const e = errorsOf(state);
+  return (
+    <form action={action} className="space-y-4" noValidate>
+      <FormMessage state={state} />
+      <Field
+        label="Email"
+        name="email"
+        type="email"
+        autoComplete="email"
+        error={e.email}
+        required
+      />
+      <Button type="submit" loading={pending} className="w-full">
+        Send reset link
+      </Button>
+    </form>
+  );
+}
+
+export function ResetPasswordForm() {
+  const [state, action, pending] = useActionState(resetPassword, initial);
+  const e = errorsOf(state);
+  return (
+    <form action={action} className="space-y-4" noValidate>
+      <FormMessage state={state} />
+      <Field
+        label="New password"
+        name="newPassword"
+        type="password"
+        autoComplete="new-password"
+        hint="At least 8 characters, with a letter and a number."
+        error={e.newPassword}
+        required
+      />
+      <Field
+        label="Confirm new password"
+        name="confirmPassword"
+        type="password"
+        autoComplete="new-password"
+        error={e.confirmPassword}
+        required
+      />
+      <Button type="submit" loading={pending} className="w-full">
+        Set new password
+      </Button>
+    </form>
   );
 }

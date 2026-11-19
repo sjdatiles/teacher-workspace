@@ -13,7 +13,8 @@
 ## Supabase settings
 
 - Authentication → URL Configuration: Site URL = your site URL; add `<site>/auth/callback` to Redirect URLs.
-- Authentication → Email: keep "Confirm email" on.
+- Authentication → Email: keep "Confirm email" on. The password-reset email uses the default "Reset Password" template (link goes to `<site>/auth/callback`, already in the Redirect URLs).
+- Supabase's built-in email sender allows only a few emails per hour; set up custom SMTP (Authentication → SMTP) before many teachers use sign-up or password reset.
 - Authentication → Password security: enable leaked-password protection.
 - Database: apply `supabase/migrations/*` in filename order (already applied to the live project through `20261123000000_m8_hardening.sql`).
 

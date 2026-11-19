@@ -3,7 +3,13 @@ import { NextResponse, type NextRequest } from "next/server";
 import { env } from "@/lib/env";
 import { getAuthUser } from "@/lib/supabase/auth";
 
-const PUBLIC_PATHS = ["/login", "/signup", "/auth/callback", "/auth/check-email"];
+const PUBLIC_PATHS = [
+  "/login",
+  "/signup",
+  "/forgot-password",
+  "/auth/callback",
+  "/auth/check-email",
+];
 
 /**
  * Refreshes the Supabase session cookie and enforces route protection.

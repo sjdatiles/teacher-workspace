@@ -7,9 +7,9 @@ export const metadata: Metadata = { title: "Log in" };
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ deleted?: string }>;
+  searchParams: Promise<{ deleted?: string; reset?: string }>;
 }) {
-  const { deleted } = await searchParams;
+  const { deleted, reset } = await searchParams;
   return (
     <>
       <h1 className="text-2xl font-extrabold tracking-tight">Welcome back</h1>
@@ -20,6 +20,14 @@ export default async function LoginPage({
           className="rounded-control bg-success-50 text-success-500 mb-4 px-3.5 py-2.5 text-sm font-medium"
         >
           Your account and all of its data have been deleted.
+        </p>
+      )}
+      {reset === "1" && (
+        <p
+          role="status"
+          className="rounded-control bg-success-50 text-success-500 mb-4 px-3.5 py-2.5 text-sm font-medium"
+        >
+          Password changed. Log in with your new password.
         </p>
       )}
       <LoginForm />

@@ -1,14 +1,18 @@
 "use server";
 
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { env } from "@/lib/env";
 import { fieldErrors } from "@/lib/form-state";
 import { createClient } from "@/lib/supabase/server";
+import { RECOVERY_COOKIE, RESET_ALLOWED_COOKIE } from "./recovery";
 import {
   deleteAccountSchema,
+  forgotPasswordSchema,
   loginSchema,
   passwordSchema,
   profileSchema,
+  resetPasswordSchema,
   signupSchema,
   type FormState,
 } from "./schemas";
@@ -137,4 +141,65 @@ export async function deleteAccount(_prev: FormState, formData: FormData): Promi
   // The session now points at a user that no longer exists; clear the cookies on this device.
   await supabase.auth.signOut({ scope: "local" });
   redirect("/login?deleted=1");
+}
+
+/**
+ * Sends a password-reset email. The answer is always the same whether or not the address has an
+ * account, so this form cannot be used to find out who is registered.
+ */
+export async function requestPasswordReset(
+  _prev: FormState,
+  formData: FormData,
+): Promise<FormState> {
+  const parsed = forgotPasswordSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { ok: false, errors: fieldErrors(parsed.error) };
+
+  const supabase = await createClient();
+  const { error } = await supabase.auth.resetPasswordForEmail(parsed.data.email, {
+    redirectTo: `${env.siteUrl}/auth/callback`,
+  });
+  if (error?.code === "over_email_send_rate_limit" || error?.status === 429) {
+    return {
+      ok: false,
+      errors: { form: "Too many requests. Please wait a few minutes and try again." },
+    };
+  }
+  if (error) console.error("resetPasswordForEmail failed", error);
+
+  (await cookies()).set(RECOVERY_COOKIE, "1", {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    maxAge: 60 * 60,
+  });
+  return {
+    ok: true,
+    message:
+      "If an account exists for that email, we've sent a reset link. Open it in this same browser. Check your spam folder if it doesn't arrive.",
+  };
+}
+
+/** Sets the new password for the teacher who arrived through a reset link, then asks them to log in. */
+export async function resetPassword(_prev: FormState, formData: FormData): Promise<FormState> {
+  const parsed = resetPasswordSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { ok: false, errors: fieldErrors(parsed.error) };
+
+  // Only a session that was just created by a reset link may skip the current-password check.
+  const jar = await cookies();
+  if (jar.get(RESET_ALLOWED_COOKIE)?.value !== "1") redirect("/forgot-password?expired=1");
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/forgot-password?expired=1");
+
+  const { error } = await supabase.auth.updateUser({ password: parsed.data.newPassword });
+  if (error) return { ok: false, errors: { form: error.message } };
+  jar.delete(RESET_ALLOWED_COOKIE);
+
+  // End every session (including the one from the email link) so the new password is used everywhere.
+  await supabase.auth.signOut({ scope: "global" });
+  redirect("/login?reset=1");
 }

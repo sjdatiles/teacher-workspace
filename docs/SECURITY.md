@@ -11,6 +11,10 @@
 4. **Anonymous access** — the `anon` role has no table privileges and cannot execute any function in `public`.
 5. **Database functions** — `SECURITY INVOKER` with `search_path` pinned; the only `SECURITY DEFINER` function is the new-user profile trigger.
 
+## Password reset
+
+`Forgot password?` → `resetPasswordForEmail` (Supabase sends the email; the reply never reveals whether an address is registered). The emailed link returns to `/auth/callback`, which exchanges the one-time code and — only if this browser requested the reset (httpOnly cookie, 1 h) — sets a 15-minute `tw-reset-allowed` cookie and sends the teacher to `/reset-password`. The page and the action both require that cookie, so an ordinary signed-in session cannot use the reset form to skip the current-password check. After the change every session is revoked (`signOut` global) and the teacher logs in again. Redirect targets are fixed in code, never read from the URL. Supabase enforces email rate limits.
+
 ## Account deletion
 
 Settings → Delete account asks for the password (re-checked server-side) and the typed word `DELETE`, then calls the database function `delete_my_account()`. The app has no `service_role` key, so this function is `SECURITY DEFINER` and can only delete **the caller's own** user (`auth.uid()`); signed-out callers are refused. All teacher tables cascade from `auth.users`, so everything is removed. Supabase's advisor flags the function as "executable by signed-in users"; that is intentional. Trade-off: a stolen _signed-in session_ could call the function directly without the password, but such a session could already erase the same data through the normal API.

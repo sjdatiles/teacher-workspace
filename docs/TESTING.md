@@ -32,7 +32,8 @@ No end-to-end tests against the live site; no load testing; no screen-reader tes
 8. Reports: switch Term 1/2/3/Year, custom range, download CSV (opens in Excel), print view.
 9. Home: numbers match the modules; bell shows overdue/upcoming items; quick actions open their forms.
 10. Settings → Delete account with a **throw-away** second account: wrong password and wrong word are refused; the right ones sign you out, show the "deleted" message, and that email can no longer log in.
-11. Phone: repeat 3–9 quickly on a real phone.
+11. Log out → **Forgot password?** → enter your real email → open the emailed link in the same browser → set a new password → you land on log in with a green notice and the new password works (the old one does not). Opening the link a second time must say it is invalid or expired.
+12. Phone: repeat 3–9 quickly on a real phone.
 
 ## Part 11 acceptance checklist
 
@@ -42,7 +43,7 @@ Legend: **T** = covered by automated tests · **R** = render-checked with mock d
 
 - [x] Secure individual accounts — email verification, RLS (T, L)
 - [x] Private workspaces — isolation suites (T, L1)
-- [x] Responsive interface (R, L11)
+- [x] Responsive interface (R, L12)
 - [x] Six-module navigation (R)
 - [x] Consistent design system (R)
 
@@ -84,7 +85,7 @@ Legend: **T** = covered by automated tests · **R** = render-checked with mock d
 - [x] Core workflows tested at the database and rules level (T)
 - [x] Account isolation verified (T)
 - [x] Database integrity verified (T)
-- [x] Responsive behavior rendered (R) — real-device check pending (L11)
+- [x] Responsive behavior rendered (R) — real-device check pending (L12)
 - [ ] Live end-to-end pass with real data for M4–M8 — pending the owner checklist above
 - [x] Documentation prepared (`docs/`, README)
 - [ ] "No critical known defects" — none known, but not proven until the live pass is done
