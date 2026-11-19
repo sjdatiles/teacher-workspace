@@ -12,7 +12,7 @@ M8 (security audit, performance indexes, security headers, documentation) is don
 
 Docs: [User guide](docs/USER_GUIDE.md) · [Architecture](docs/ARCHITECTURE.md) · [Security](docs/SECURITY.md) · [Deployment and backups](docs/DEPLOYMENT.md) · [Testing and acceptance](docs/TESTING.md)
 
-Database tests: `supabase/tests/*.test.sh` (foundation, classes, calendar, tasks, resources, reports, notifications, security); they need PostgreSQL binaries and a non-root user. Unit tests: `npm test`.
+Database tests: `supabase/tests/*.test.sh` (foundation, classes, calendar, tasks, resources, reports, notifications, security, account); they need PostgreSQL binaries and a non-root user. Unit tests: `npm test`.
 
 ## Getting started
 

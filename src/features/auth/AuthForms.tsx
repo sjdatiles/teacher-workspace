@@ -1,9 +1,10 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
+import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import { Field } from "@/components/ui/Field";
-import { changePassword, logIn, signUp, updateProfile } from "./actions";
+import { changePassword, deleteAccount, logIn, signUp, updateProfile } from "./actions";
 import type { FormState } from "./schemas";
 
 const initial: FormState = {};
@@ -190,5 +191,56 @@ export function PasswordForm() {
         Change password
       </Button>
     </form>
+  );
+}
+
+/** Danger zone: opens a dialog that asks for the password and the word DELETE. */
+export function DeleteAccountSection() {
+  const [open, setOpen] = useState(false);
+  const [state, action, pending] = useActionState(deleteAccount, initial);
+  const e = errorsOf(state);
+  return (
+    <div className="space-y-4">
+      <p className="text-ink-soft text-sm">
+        Permanently delete your account and everything in it: academic years, subjects, sections,
+        schedules, teaching sessions and reports, events, tasks and saved links. This cannot be
+        undone. Download your reports as CSV first if you want to keep them.
+      </p>
+      <Button variant="danger" onClick={() => setOpen(true)}>
+        Delete my account…
+      </Button>
+      <Modal open={open} onClose={() => setOpen(false)} title="Delete your account?">
+        <form action={action} className="space-y-4" noValidate>
+          <p className="text-ink-soft text-sm">
+            All of your data will be erased immediately and you will be signed out. To confirm,
+            enter your password and type <strong className="text-ink">DELETE</strong>.
+          </p>
+          <FormMessage state={state} />
+          <Field
+            label="Password"
+            name="password"
+            type="password"
+            autoComplete="current-password"
+            error={e.password}
+            required
+          />
+          <Field
+            label="Type DELETE to confirm"
+            name="confirmation"
+            autoComplete="off"
+            error={e.confirmation}
+            required
+          />
+          <div className="flex justify-end gap-2">
+            <Button variant="secondary" onClick={() => setOpen(false)} disabled={pending}>
+              Cancel
+            </Button>
+            <Button type="submit" variant="danger" loading={pending}>
+              Delete everything
+            </Button>
+          </div>
+        </form>
+      </Modal>
+    </div>
   );
 }

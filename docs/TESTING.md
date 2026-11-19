@@ -2,11 +2,11 @@
 
 ## Automated (run on every milestone)
 
-| Suite                                                                     | Command                                              | Checks                                                                                                           |
-| ------------------------------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| Unit tests (rules, recurrence, notifications, reports, tasks, resources…) | `npm test`                                           | 101 tests                                                                                                        |
-| Lint / types / build                                                      | `npm run lint && npm run typecheck && npm run build` | clean                                                                                                            |
-| Database suites (throw-away local Postgres with all migrations applied)   | `supabase/tests/<name>.test.sh`                      | foundation 31 · classes 85 · calendar 40 · tasks 37 · resources 64 · reports 26 · notifications 19 · security 10 |
+| Suite                                                                     | Command                                              | Checks                                                                                                                        |
+| ------------------------------------------------------------------------- | ---------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Unit tests (rules, recurrence, notifications, reports, tasks, resources…) | `npm test`                                           | 101 tests                                                                                                                     |
+| Lint / types / build                                                      | `npm run lint && npm run typecheck && npm run build` | clean                                                                                                                         |
+| Database suites (throw-away local Postgres with all migrations applied)   | `supabase/tests/<name>.test.sh`                      | foundation 31 · classes 85 · calendar 40 · tasks 37 · resources 64 · reports 26 · notifications 19 · security 10 · account 22 |
 
 Needs PostgreSQL server binaries on PATH and a non-root user: `bash supabase/tests/classes.test.sh`.
 The database suites cover three-term validation, session generation, counting rule, rescheduling, ownership and cross-account isolation.
@@ -31,7 +31,8 @@ No end-to-end tests against the live site; no load testing; no screen-reader tes
 7. Resources: add a link (try `javascript:alert(1)` — must be refused), favorite it, search, filter.
 8. Reports: switch Term 1/2/3/Year, custom range, download CSV (opens in Excel), print view.
 9. Home: numbers match the modules; bell shows overdue/upcoming items; quick actions open their forms.
-10. Phone: repeat 3–9 quickly on a real phone.
+10. Settings → Delete account with a **throw-away** second account: wrong password and wrong word are refused; the right ones sign you out, show the "deleted" message, and that email can no longer log in.
+11. Phone: repeat 3–9 quickly on a real phone.
 
 ## Part 11 acceptance checklist
 
@@ -41,7 +42,7 @@ Legend: **T** = covered by automated tests · **R** = render-checked with mock d
 
 - [x] Secure individual accounts — email verification, RLS (T, L)
 - [x] Private workspaces — isolation suites (T, L1)
-- [x] Responsive interface (R, L10)
+- [x] Responsive interface (R, L11)
 - [x] Six-module navigation (R)
 - [x] Consistent design system (R)
 
@@ -83,7 +84,7 @@ Legend: **T** = covered by automated tests · **R** = render-checked with mock d
 - [x] Core workflows tested at the database and rules level (T)
 - [x] Account isolation verified (T)
 - [x] Database integrity verified (T)
-- [x] Responsive behavior rendered (R) — real-device check pending (L10)
+- [x] Responsive behavior rendered (R) — real-device check pending (L11)
 - [ ] Live end-to-end pass with real data for M4–M8 — pending the owner checklist above
 - [x] Documentation prepared (`docs/`, README)
 - [ ] "No critical known defects" — none known, but not proven until the live pass is done

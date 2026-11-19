@@ -5,6 +5,7 @@ import { env } from "@/lib/env";
 import { fieldErrors } from "@/lib/form-state";
 import { createClient } from "@/lib/supabase/server";
 import {
+  deleteAccountSchema,
   loginSchema,
   passwordSchema,
   profileSchema,
@@ -104,4 +105,36 @@ export async function changePassword(_prev: FormState, formData: FormData): Prom
   const { error } = await supabase.auth.updateUser({ password: parsed.data.newPassword });
   if (error) return { ok: false, errors: { form: error.message } };
   return { ok: true, message: "Password changed." };
+}
+
+/**
+ * Permanently deletes the signed-in teacher's account and every record they own.
+ * Requires the current password and the typed word DELETE. The deletion itself is a database
+ * function that can only remove the caller's own user (see delete_my_account()).
+ */
+export async function deleteAccount(_prev: FormState, formData: FormData): Promise<FormState> {
+  const parsed = deleteAccountSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { ok: false, errors: fieldErrors(parsed.error) };
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user?.email) redirect("/login");
+
+  const { error: verifyError } = await supabase.auth.signInWithPassword({
+    email: user.email,
+    password: parsed.data.password,
+  });
+  if (verifyError) return { ok: false, errors: { password: "Password is incorrect." } };
+
+  const { error } = await supabase.rpc("delete_my_account");
+  if (error) {
+    console.error("delete_my_account failed", error);
+    return { ok: false, errors: { form: "Could not delete your account. Please try again." } };
+  }
+
+  // The session now points at a user that no longer exists; clear the cookies on this device.
+  await supabase.auth.signOut({ scope: "local" });
+  redirect("/login?deleted=1");
 }

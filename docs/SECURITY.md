@@ -11,6 +11,10 @@
 4. **Anonymous access** — the `anon` role has no table privileges and cannot execute any function in `public`.
 5. **Database functions** — `SECURITY INVOKER` with `search_path` pinned; the only `SECURITY DEFINER` function is the new-user profile trigger.
 
+## Account deletion
+
+Settings → Delete account asks for the password (re-checked server-side) and the typed word `DELETE`, then calls the database function `delete_my_account()`. The app has no `service_role` key, so this function is `SECURITY DEFINER` and can only delete **the caller's own** user (`auth.uid()`); signed-out callers are refused. All teacher tables cascade from `auth.users`, so everything is removed. Supabase's advisor flags the function as "executable by signed-in users"; that is intentional. Trade-off: a stolen _signed-in session_ could call the function directly without the password, but such a session could already erase the same data through the normal API.
+
 ## HTTP hardening (next.config.ts)
 
 CSP (self + this project's Supabase URL only, no framing, no plugins), `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`,

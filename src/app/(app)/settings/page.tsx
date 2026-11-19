@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Card, CardHeader } from "@/components/ui/Card";
 import { AcademicYearsSection } from "@/features/academic/AcademicYearsSection";
-import { PasswordForm, ProfileForm } from "@/features/auth/AuthForms";
+import { DeleteAccountSection, PasswordForm, ProfileForm } from "@/features/auth/AuthForms";
 import { NotificationForm } from "@/features/settings/NotificationForm";
 import { getAcademicContext, getNotificationSettings } from "@/services/academic";
 import { requireTeacher } from "@/services/teacher";
@@ -46,6 +46,10 @@ export default async function SettingsPage() {
           <Card>
             <CardHeader title="Password" />
             <PasswordForm />
+          </Card>
+          <Card className="border-danger-500/30 xl:col-span-2">
+            <CardHeader title="Delete account" />
+            <DeleteAccountSection />
           </Card>
           <Card>
             <CardHeader title="Notifications" icon={<Bell className="size-4.5" aria-hidden />} />

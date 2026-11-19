@@ -17,7 +17,7 @@ chk "no policy targets anon or public" "select count(*) from pg_policies where s
 F="from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public'"
 chk "no public function is executable by anon" "select count(*) $F and has_function_privilege('anon', p.oid, 'execute');" 0
 chk "every function pins search_path" "select count(*) $F and not coalesce(p.proconfig::text,'') like '%search_path%';" 0
-chk "only handle_new_user is SECURITY DEFINER" "select count(*) $F and p.prosecdef and p.proname<>'handle_new_user';" 0
+chk "only handle_new_user and delete_my_account are SECURITY DEFINER" "select count(*) $F and p.prosecdef and p.proname not in ('handle_new_user','delete_my_account');" 0
 chk "every foreign key has a covering index" "select count(*) from pg_constraint c join pg_namespace n on n.oid=c.connamespace where c.contype='f' and n.nspname='public' and not exists (select 1 from pg_index i where i.indrelid=c.conrelid and (i.indkey::int2[])[0:array_length(c.conkey,1)-1] = c.conkey);" 0
 
 echo; if [ $FAILS -eq 0 ]; then echo "ALL PASSED"; else echo "$FAILS FAILED"; exit 1; fi

@@ -36,7 +36,11 @@ Pick **Term 1, 2, 3, Whole year** or a **custom date range**; optionally filter 
 
 Home shows today's classes, upcoming items, task status and term progress. The bell lists upcoming sessions and events, deadlines and overdue tasks; mark items read or dismiss them. The **Quick actions** buttons open the matching add form.
 
-## 8. Tips
+## 8. Deleting your account
+
+Settings → **Delete account** → _Delete my account…_. Enter your password and type `DELETE`. Your account and every record in it are erased immediately and cannot be recovered, so download any reports you need as CSV first.
+
+## 9. Tips
 
 - Set up the year and terms first; everything else depends on them.
 - If a date shows "not in any term", fix your term dates in Settings.
