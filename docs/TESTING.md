@@ -6,7 +6,7 @@
 | ------------------------------------------------------------------------- | ---------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
 | Unit tests (rules, recurrence, notifications, reports, tasks, resources…) | `npm test`                                           | 101 tests                                                                                                                     |
 | Lint / types / build                                                      | `npm run lint && npm run typecheck && npm run build` | clean                                                                                                                         |
-| Database suites (throw-away local Postgres with all migrations applied)   | `supabase/tests/<name>.test.sh`                      | foundation 31 · classes 85 · calendar 40 · tasks 37 · resources 64 · reports 26 · notifications 19 · security 10 · account 22 |
+| Database suites (throw-away local Postgres with all migrations applied)   | `supabase/tests/<name>.test.sh`                      | foundation 31 · classes 85 · calendar 40 · tasks 37 · resources 64 · reports 26 · notifications 19 · security 10 · account 23 |
 
 Needs PostgreSQL server binaries on PATH and a non-root user: `bash supabase/tests/classes.test.sh`.
 The database suites cover three-term validation, session generation, counting rule, rescheduling, ownership and cross-account isolation.
