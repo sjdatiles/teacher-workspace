@@ -25,6 +25,10 @@
 
 Local: `cp .env.example .env.local`, fill it in, `npm install`, `npm run dev`.
 
+## Region (speed)
+
+`vercel.json` pins the server functions to `hnd1` (Tokyo), the same region as the Supabase project (`ap-northeast-1`). Keep them together: every page makes several database calls, and a cross-ocean hop on each one makes the site feel slow. If you ever move the Supabase project, change `regions` to match.
+
 ## Errors and logging
 
 Server errors surface as friendly messages in the UI; details go to the Vercel function logs (Vercel → project → Logs).

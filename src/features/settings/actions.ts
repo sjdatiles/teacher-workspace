@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import type { FormState } from "@/lib/form-state";
 import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/supabase/auth";
 
 /** Unchecked checkboxes are absent from FormData, so presence means "on". */
 export async function updateNotificationSettings(
@@ -11,9 +12,7 @@ export async function updateNotificationSettings(
   formData: FormData,
 ): Promise<FormState> {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAuthUser(supabase);
   if (!user) redirect("/login");
 
   const { error } = await supabase

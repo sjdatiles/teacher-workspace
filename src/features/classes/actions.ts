@@ -21,6 +21,7 @@ import {
 } from "./rules";
 import { dayLabel } from "./constants";
 import type { Schedule } from "./types";
+import { getAuthUser } from "@/lib/supabase/auth";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const isId = (v: string) => UUID.test(v);
@@ -35,9 +36,7 @@ const done = (message: string): FormState => {
 
 async function session() {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAuthUser(supabase);
   if (!user) redirect("/login");
   return { supabase, userId: user.id };
 }

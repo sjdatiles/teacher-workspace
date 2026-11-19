@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/supabase/auth";
 
 export type Teacher = {
   id: string;
@@ -17,9 +18,7 @@ export type Teacher = {
  */
 export const requireTeacher = cache(async (): Promise<Teacher> => {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAuthUser(supabase);
   if (!user) redirect("/login");
 
   const { data: profile } = await supabase
@@ -30,7 +29,7 @@ export const requireTeacher = cache(async (): Promise<Teacher> => {
 
   return {
     id: user.id,
-    email: user.email ?? "",
+    email: user.email,
     fullName: profile?.full_name ?? "",
     jobTitle: profile?.job_title ?? "Teacher",
     schoolName: profile?.school_name ?? "",

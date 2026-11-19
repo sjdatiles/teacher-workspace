@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/supabase/auth";
 
 // Keys look like 'task-overdue:<uuid>', 'task-due:<uuid>:2026-11-20', 'session:<uuid>', 'event:<uuid>:2026-11-20'.
 const KEY = /^(session|event|task-due|task-overdue):[0-9a-f-]{36}(:\d{4}-\d{2}-\d{2})?$/i;
@@ -20,9 +21,7 @@ export async function setNotificationState(
   if (clean.length === 0) return { ok: true };
 
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAuthUser(supabase);
   if (!user) redirect("/login");
 
   const { error } = await supabase.from("notification_states").upsert(

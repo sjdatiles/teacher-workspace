@@ -5,14 +5,13 @@ import { redirect } from "next/navigation";
 import type { FormState } from "@/lib/form-state";
 import { createClient } from "@/lib/supabase/server";
 import { TERM_NUMBERS, termField, validateYear, type YearInput } from "./rules";
+import { getAuthUser } from "@/lib/supabase/auth";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 async function currentUserId() {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAuthUser(supabase);
   if (!user) redirect("/login");
   return { supabase, userId: user.id };
 }

@@ -7,6 +7,7 @@ import type { FormState } from "@/lib/form-state";
 import { createClient } from "@/lib/supabase/server";
 import { TASK_PRIORITIES, TASK_STATUSES } from "./constants";
 import { validateTask, type TaskInput } from "./rules";
+import { getAuthUser } from "@/lib/supabase/auth";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const text = (fd: FormData, key: string) => String(fd.get(key) ?? "").trim();
@@ -19,9 +20,7 @@ const done = (message: string): FormState => {
 
 async function session() {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAuthUser(supabase);
   if (!user) redirect("/login");
   return { supabase, userId: user.id };
 }

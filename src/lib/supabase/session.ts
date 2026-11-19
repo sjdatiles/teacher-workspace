@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { env } from "@/lib/env";
+import { getAuthUser } from "@/lib/supabase/auth";
 
 const PUBLIC_PATHS = ["/login", "/signup", "/auth/callback", "/auth/check-email"];
 
@@ -28,9 +29,7 @@ export async function updateSession(request: NextRequest) {
   });
 
   // getUser() validates the token with Supabase Auth (getSession() would not).
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getAuthUser(supabase);
 
   const path = request.nextUrl.pathname;
   const isPublic = PUBLIC_PATHS.some((p) => path === p || path.startsWith(`${p}/`));

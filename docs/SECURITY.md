@@ -2,7 +2,7 @@
 
 ## Model
 
-1. **Authentication** — Supabase Auth, email + password with email verification. Sessions are cookies refreshed by `src/proxy.ts`; the server always calls `auth.getUser()` (validated with Supabase), never trusts the cookie alone.
+1. **Authentication** — Supabase Auth, email + password with email verification. Sessions are cookies refreshed by `src/proxy.ts`; the server never trusts the cookie alone: `getClaims()` verifies the token signature (locally with Supabase's signing keys, or by asking Auth when the project uses a shared secret). Password and account changes use `getUser()`, which always asks Auth. Trade-off: after signing out elsewhere, an old token stays valid until it expires (at most one hour).
 2. **Authorization** — three independent layers:
    - `proxy.ts` redirects signed-out visitors to `/login`.
    - Every service and Server Action loads the teacher and filters by `user_id`; ids from forms are UUID-validated.
