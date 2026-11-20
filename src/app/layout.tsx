@@ -11,7 +11,7 @@ const nunito = localFont({
 });
 
 export const metadata: Metadata = {
-  title: { default: "Teacher Workspace", template: "%s · Teacher Workspace" },
+  title: { default: "Manunudlo", template: "%s · Manunudlo" },
   description:
     "A single workspace for teachers to plan classes, track teaching sessions, manage tasks and save resources.",
 };

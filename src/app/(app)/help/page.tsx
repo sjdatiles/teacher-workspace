@@ -25,7 +25,7 @@ export default function HelpPage() {
     <>
       <PageHeader
         title="Help & Support"
-        description="Quick answers about how Teacher Workspace works."
+        description="Quick answers about how Manunudlo works."
         icon={LifeBuoy}
       />
       <div className="grid gap-4 md:grid-cols-3">

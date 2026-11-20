@@ -1,6 +1,6 @@
 # Architecture
 
-Teacher Workspace is an individual-teacher web app on the DepEd **three-term** calendar.
+Manunudlo is an individual-teacher web app on the DepEd **three-term** calendar.
 Next.js 16 (App Router, TypeScript, Tailwind) on Vercel; Supabase for Postgres, Auth and row-level security.
 
 ## Layers

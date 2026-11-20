@@ -57,7 +57,7 @@ export default async function HomePage() {
           <EmptyState
             icon={<CalendarRange className="size-8" aria-hidden />}
             title="Start by setting up your academic year"
-            description="Your workspace is organized by academic year and its three terms. Add the dates for yours and the rest of Teacher Workspace will follow."
+            description="Your workspace is organized by academic year and its three terms. Add the dates for yours and the rest of Manunudlo will follow."
             action={
               <LinkButton href="/settings#academic-years">
                 <CalendarRange className="size-4" aria-hidden /> Set up academic year

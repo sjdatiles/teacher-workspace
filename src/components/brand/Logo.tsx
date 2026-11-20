@@ -3,8 +3,8 @@ type LogoProps = { className?: string; showWordmark?: boolean };
 /** Redrawn SVG mark: open book with a teacher figure (inspired by the design reference). */
 export function LogoMark({ className = "size-10" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 48 48" className={className} role="img" aria-label="Teacher Workspace logo">
-      <title>Teacher Workspace</title>
+    <svg viewBox="0 0 48 48" className={className} role="img" aria-label="Manunudlo logo">
+      <title>Manunudlo</title>
       {/* book */}
       <path d="M4 20c6-2.2 13-1.6 20 3.2v18.6C17 37 10 36.4 4 38.4z" fill="#f47b20" />
       <path d="M44 20c-6-2.2-13-1.6-20 3.2v18.6c7-4.8 14-5.4 20-3.4z" fill="#fb9a55" />
@@ -24,11 +24,8 @@ export function Logo({ className = "", showWordmark = true }: LogoProps) {
     <span className={`inline-flex items-center gap-2.5 ${className}`}>
       <LogoMark />
       {showWordmark && (
-        <span className="leading-none">
-          <span className="text-ink-soft block text-[15px] font-semibold tracking-tight">
-            Teacher
-          </span>
-          <span className="text-ink block text-lg font-extrabold tracking-tight">Workspace</span>
+        <span className="text-ink text-xl leading-none font-extrabold tracking-tight">
+          Manunudlo
         </span>
       )}
     </span>

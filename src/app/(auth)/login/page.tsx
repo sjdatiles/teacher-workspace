@@ -13,7 +13,7 @@ export default async function LoginPage({
   return (
     <>
       <h1 className="text-2xl font-extrabold tracking-tight">Welcome back</h1>
-      <p className="text-ink-soft mt-1 mb-6 text-sm">Log in to your Teacher Workspace.</p>
+      <p className="text-ink-soft mt-1 mb-6 text-sm">Log in to your Manunudlo workspace.</p>
       {deleted === "1" && (
         <p
           role="status"
